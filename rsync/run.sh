@@ -34,16 +34,28 @@ else
 	OPTIONS='-archive --recursive --compress --delete --prune-empty-dirs'
 fi
 
+error_count=0
+
 for folder in $FOLDERS; do
 
 	bashio::log.info "Sync $folder -> ${REMOTE_FOLDER}"
 	# shellcheck disable=SC2086
-	rsync ${OPTIONS} \
+	if ! rsync ${OPTIONS} \
 	-e "ssh -p ${PORT} -i ${PRIVATE_KEY_FILE} -oStrictHostKeyChecking=no" \
 	"$folder" "${USERNAME}@${HOST}:${REMOTE_FOLDER}"
-	if [ $? -eq 0 ]; then
-		date -Iseconds > /config/whitelist_dir/latest_rsync.log
+	then
+		error_count=$(expr $error_count + 1)
 	fi
 done
+
+if [ "$error_count" -eq 0 ]; then
+	curl -X POST -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+	-H "Content-Type: application/json" \
+	http://supervisor/core/api/events/rsync_finished
+else
+	curl -X POST -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+	-H "Content-Type: application/json" \
+	http://supervisor/core/api/events/rsync_failed
+fi
 
 bashio::log.info "Synced all folders"
