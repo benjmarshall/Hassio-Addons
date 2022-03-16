@@ -4,7 +4,7 @@ env:
   BUILD_ARGS: "--test"
   MONITORED_FILES: "build.yaml config.yaml Dockerfile rootfs build.json config.json"
 
-on: workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
   init:
