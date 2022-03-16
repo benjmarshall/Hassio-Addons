@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
-name: Ben Marshall's Home Assistant add-on repository
+name: Ben Marshall Home Assistant Add-Ons
 url: 'https://github.com/benjmarshall/Hasio-Addons'
 maintainer: Ben Marshall <ben@benmarshall.co.uk>
