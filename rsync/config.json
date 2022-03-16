@@ -13,11 +13,9 @@
     "i386"
   ],
   "homeassistant": "0.115.0",
-  "startup": "application",
   "boot": "manual",
   "init":false,
   "image": "ghcr.io/benjmarshall/ha-rsync-{arch}",
-  "ports": {},
   "map": [
     "share:rw",
     "config:rw",
